@@ -37,7 +37,7 @@ describe('users routes', () => {
       .send({ email, password });
 
     expect(res.status).toBe(200);
-    expect(res.body).toEqual({ message: 'Successfully signed in' });
+    expect(res.body).toEqual({ message: 'Successfully signed in!' });
   });
 
 });
