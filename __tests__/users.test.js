@@ -9,6 +9,21 @@ const mockUser = {
   password: '654321',
 };
 
+const registerAndLogin = async (userProps = {}) => {
+  const password = userProps.password ?? mockUser.password;
+
+  // create an agent that gives us the ability to store cookies between requests in a test
+  const agent = request.agent(app);
+
+  // Create a user to sign in with
+  const user = await UserService.create({ ...mockUser, ...userProps });
+
+  // now sign in 
+  const { email } = user;
+  await agent.post('/api/v1/users/sessions').send({ email, password });
+  return [agent, user];
+};
+
 describe('users routes', () => {
   beforeEach(() => {
     return setup(pool);
