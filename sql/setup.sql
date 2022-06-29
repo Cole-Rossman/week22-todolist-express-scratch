@@ -15,9 +15,24 @@ CREATE TABLE todos (
     task VARCHAR NOT NULL,
     description VARCHAR NOT NULL,
     complete BOOLEAN NOT NULL DEFAULT(false),
-    create_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     FOREIGN KEY (user_id) REFERENCES users(id)    
 );
 
+INSERT INTO users (
+    email,
+    password_hash
+)
+VALUES
+    ('testemail@example.com', 'testing123');
 
-
+INSERT INTO todos (
+    task,
+    description,
+    complete,
+    user_id
+)
+VALUES
+    ('Clean my room', 'Make bed, vacuum floor, fold laundry', true, '1'),
+    ('Wash my car', 'Go through wash, scrub moss off door, vacuum carpets', false, '1'),
+    ('Do yardwork', 'Mow the lawn, trim the hedges, pressure wash the driveway', true, '1');
