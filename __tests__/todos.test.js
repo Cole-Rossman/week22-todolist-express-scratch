@@ -103,4 +103,14 @@ describe('todos routes', () => {
     expect(resp.body).toEqual({ ...todo, task: 'Ruin bed', created_at: expect.any(String) });
   });
 
+  it('deletes a todo if associated with authenticated user', async () => {
+    const [agent] = await registerAndLogin();
+    const resp = await agent.delete('/api/v1/todos/1');
+    expect(resp.status).toBe(200);
+    const { body } = await agent.get('/api/v1/todos/1');
+    expect(body).toEqual('');
+  });
+
+
+
 });
