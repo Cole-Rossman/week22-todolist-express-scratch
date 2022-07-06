@@ -3,7 +3,7 @@ const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
 const UserService = require('../lib/services/UserService');
-// const Todo = require('../lib/models/Todo');
+const Todo = require('../lib/models/Todo');
 
 const mockUser = {
   email: 'testing@example.com',
@@ -87,5 +87,22 @@ describe('todos routes', () => {
       },
     );
   });
+
+  it('updates a todo if associated with authenticated user', async () => {
+    const [agent] = await registerAndLogin();
+    const todo = await Todo.insert({
+      task: 'Make bed',
+      description: 'Wash sheets and pillow cases',
+      complete: false,
+      created_at: expect.any(String),
+      user_id: expect.any(String),
+    });
+    const resp = await agent
+      .put(`/api/v1/todos/${todo.id}`)
+      .send({ complete: true });
+    expect(resp.status).toBe(200);
+    expect(resp.body).toEqual({ ...todo, complete: true });
+  });
+
     
 });
