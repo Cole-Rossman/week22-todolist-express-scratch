@@ -10,11 +10,6 @@ const mockUser = {
   password: '654321',
 };
 
-// const mockUser2 = {
-//   email: 'testing2@example.com',
-//   password: '123456',
-// };
-
 const registerAndLogin = async (userProps = {}) => {
   const password = userProps.password ?? mockUser.password;
   
@@ -104,13 +99,18 @@ describe('todos routes', () => {
   });
 
   it('deletes a todo if associated with authenticated user', async () => {
-    const [agent] = await registerAndLogin();
-    const resp = await agent.delete('/api/v1/todos/1');
+    const [agent, user] = await registerAndLogin();
+    const todo = await Todo.insert({
+      task: 'Wash fish tank',
+      description: 'Clean the glass and replace filter',
+      complete: true,
+      user_id: user.id,
+    });
+    const resp = await agent.delete(`/api/v1/todos/${todo.id}`);
     expect(resp.status).toBe(200);
-    const { body } = await agent.get('/api/v1/todos/1');
-    expect(body).toEqual('');
+    const { body } = await agent.get(`/api/v1/todos/${todo.id}`);
+    expect(body.status).toEqual(404);
+    // 404 not found will indicate the todo has been deleted
   });
-
-
 
 });
