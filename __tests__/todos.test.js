@@ -43,7 +43,6 @@ describe('todos routes', () => {
       {
         task: 'Clean my room',
         description: 'Make bed, vacuum floor, fold laundry',
-        complete: true,
       }
     );
     const resp = await agent.get('/api/v1/todos');
@@ -53,7 +52,7 @@ describe('todos routes', () => {
         id: expect.any(String),
         task: 'Clean my room',
         description: 'Make bed, vacuum floor, fold laundry',
-        complete: true,
+        complete: false,
         created_at: expect.any(String),
         user_id: expect.any(String),    
       }
@@ -67,7 +66,6 @@ describe('todos routes', () => {
       {
         task: 'Clean my room',
         description: 'Make bed, vacuum floor, fold laundry',
-        complete: true,
       }
     );
     expect(resp.status).toBe(200);
@@ -76,7 +74,7 @@ describe('todos routes', () => {
         id: expect.any(String),
         task: 'Clean my room',
         description: 'Make bed, vacuum floor, fold laundry',
-        complete: true,
+        complete: false,
         created_at: expect.any(String),
         user_id: expect.any(String),    
       },
